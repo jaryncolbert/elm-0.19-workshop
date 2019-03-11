@@ -69,7 +69,7 @@ viewArticle : Article Full -> Html msg
 viewFeed : List (Article Preview) -> Html msg
 
 This indicates that `viewArticle` requires an article _with a `body` present_,
-wereas `viewFeed` accepts articles with no bodies. (We could also have written
+whereas `viewFeed` accepts articles with no bodies. (We could also have written
 it as `List (Article a)` to specify that feeds can accept either articles that
 have `body` present or not. Either work, given that feeds do not attempt to
 read the `body` field from articles.)
@@ -197,11 +197,11 @@ metadataDecoder =
        as the order of the fields in `type alias Metadata` above. ☝️
     -}
     Decode.succeed Metadata
-        |> hardcoded "(needs decoding!)"
-        |> hardcoded "(needs decoding!)"
-        |> hardcoded []
-        |> hardcoded False
-        |> hardcoded 0
+        |> required "description" Decode.string
+        |> required "title" Decode.string
+        |> required "tagList" (Decode.list Decode.string)
+        |> required "favorited" Decode.bool
+        |> required "favoritesCount" Decode.int
         |> required "createdAt" Timestamp.iso8601Decoder
 
 
