@@ -37,17 +37,15 @@ decodeErrors error =
             response.body
                 |> decodeString (field "errors" errorsDecoder)
                 |> Result.withDefault [ "Server error" ]
-
         err ->
             [ "Server error" ]
 
-
 errorsDecoder : Decoder (List String)
 errorsDecoder =
-    Decode.keyValuePairs (Decode.list Decode.string)
-        |> Decode.map (List.concatMap fromPair)
+    Decode.keyValuePairs Decode.string
+        |> Decode.map (List.map fromPair)
 
 
-fromPair : ( String, List String ) -> List String
-fromPair ( field, errors ) =
-    List.map (\error -> field ++ " " ++ error) errors
+fromPair : ( String, String ) -> String
+fromPair ( field, error ) =
+    field ++ ": " ++ error
