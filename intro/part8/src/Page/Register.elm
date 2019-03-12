@@ -155,7 +155,7 @@ update msg model =
                 responseDecoder =
                     Decode.field "user" Viewer.decoder
 
-                {- 👉 TODO: Create a Http.Request value that represents
+                {- 👉 DONE: Create a Http.Request value that represents
                       a POST request to "/api/users"
 
                    💡 HINT 1: Documentation for `Http.post` is here:
@@ -168,9 +168,10 @@ update msg model =
                 -}
                 request : Http.Request Viewer
                 request =
-                    Debug.todo "Call Http.post to represent a POST to /api/users"
+                      Http.post "/api/users" requestBody responseDecoder
 
-                {- 👉 TODO: Use Http.send to turn the request we just defined
+
+                {- 👉 DONE: Use Http.send to turn the request we just defined
                    into a Cmd for `update` to execute.
 
                    💡 HINT 1: Documentation for `Http.send` is here:
@@ -182,7 +183,7 @@ update msg model =
                 -}
                 cmd : Cmd Msg
                 cmd =
-                    Cmd.none
+                    Http.send CompletedRegister <| request
             in
             ( { model | problems = [] }, cmd )
 
